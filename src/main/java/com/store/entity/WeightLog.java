@@ -25,6 +25,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @Builder
 public class WeightLog {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -33,9 +34,50 @@ public class WeightLog {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @Column(nullable = false)
-    private Double weight;
+    private double weight;
 
-    @Column(nullable = false)
-    private LocalDateTime loggedAt = LocalDateTime.now();
+    private LocalDateTime recordedAt;
+
+    public WeightLog() {
+        this.recordedAt = LocalDateTime.now();
+    }
+
+    public WeightLog(User user, double weight) {
+        this.user = user;
+        this.weight = weight;
+        this.recordedAt = LocalDateTime.now();
+    }
+
+    // Getter & Setter
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public double getWeight() {
+        return weight;
+    }
+
+    public void setWeight(double weight) {
+        this.weight = weight;
+    }
+
+    public LocalDateTime getRecordedAt() {
+        return recordedAt;
+    }
+
+    public void setRecordedAt(LocalDateTime recordedAt) {
+        this.recordedAt = recordedAt;
+    }
 }
