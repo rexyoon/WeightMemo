@@ -1,8 +1,9 @@
 package com.store.service;
 
 import com.store.dto.UserDTO;
+import com.store.entity.User;
 
 public interface UserService {
-    UserDTO createUser(UserDTO userDTO);
-    UserDTO getUserById(Long id);
+    User createUser(User user);
+    User getUserById(Long id);
 }

@@ -1,5 +1,6 @@
 package com.store.service;
 
+import java.util.Date;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
@@ -19,32 +20,26 @@ public class UserServiceImpl implements UserService {
         this.userRepository = userRepository;
     }
 
-	@Override
-	public UserDTO createUser(UserDTO userDTO) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    @Override
+    public User createUser(User user) {
+        // 중복된 사용자 체크
+        if (userRepository.existsByUsername(user.getUsername())) {
+            throw new RuntimeException("이미 존재하는 사용자 이름입니다: " + user.getUsername());
+        }
+        if (userRepository.existsByEmail(user.getEmail())) {
+            throw new RuntimeException("이미 존재하는 이메일입니다: " + user.getEmail());
+        }
 
-	@Override
-	public UserDTO getUserById(Long id) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-    
-//    @Override
-//    public UserDTO createUser(UserDTO userDTO) {
-//        User user = User.builder()
-//                .username(userDTO.getUsername())
-//                .email(userDTO.getEmail())
-//                .password("hashed_password") // 실제로는 BCrypt 등으로 암호화 필요
-//                .build();
-//        User savedUser = userRepository.save(user);
-//        return new UserDTO(savedUser.getId(), savedUser.getUsername(), savedUser.getEmail(), savedUser.getCreatedAt());
-//    }
-//
-//    @Override
-//    public UserDTO getUserById(Long id) {
-//        Optional<User> user = userRepository.findById(id);
-//        return user.map(u -> new UserDTO(u.getId(), u.getUsername(), u.getEmail(), u.getCreatedAt())).orElse(null);
-//    }
+        // 생성 시간 설정 (자동 저장)
+        //user.setCreatedAt(new Date());
+
+        // 사용자 저장
+        return userRepository.save(user);
+    }
+	  @Override
+	    public User getUserById(Long userId) {
+	        return userRepository.findById(userId)
+	                .orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다: " + userId));
+	    }
+
 }
